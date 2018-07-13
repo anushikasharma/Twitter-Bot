@@ -233,3 +233,25 @@ def view():
 
     ap.mainloop()
 
+
+
+
+
+master=Tk()
+master.resizable(False,False)
+m1=Frame(master,width=500,height=500 ,bg="white")
+m1.pack(fill=BOTH,expand=1)
+master.geometry("650x680")
+
+
+image = Image.open('twitter-117595_960_720 (1).png')
+photo_image = ImageTk.PhotoImage(image)
+label = Label(m1, image = photo_image)
+label.image=image
+label.grid(row=0,column=0,padx=1,pady=10,columnspan=2,rowspan=1)
+
+button =Button(m1,text="Twitter API",width=15,height=2,font=('times', 40, 'italic'),bg="white",borderwidth=3,highlightbackground="black",relief=SOLID,command=view)
+button.grid( row=0,column=0,padx=1,pady=1)
+master.mainloop()
+
+
