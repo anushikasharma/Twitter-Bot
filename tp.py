@@ -17,16 +17,17 @@ auth = tweepy.OAuthHandler( Consumer_Key,Consumer_Secret )
 auth.set_access_token( Access_Token,Access_Token_Secret )
 api = tweepy.API(auth,wait_on_rate_limit=True)
 
-
+a=input("enter the item you want to search ")
+b=int(input("enter the no of tweets "))
 results =[]
-for tweet in tweepy.Cursor( api.search,q='sanju',lang="en" ).items(20):
+for tweet in tweepy.Cursor( api.search,q=a,lang="en").items(b):
     results.append( tweet )
-    # print( tweet.created_at,tweet.text )
+
 
 
 def tweets_df(results):
-    id_list = [ tweet.id for tweet in results ]
-    data_set = pd.DataFrame( id_list,columns=[ "id"] )
+    id_list = [tweet.id for tweet in results ]
+    data_set = pd.DataFrame(id_list,columns=[ "id"] )
 
     data_set["text"] = [tweet.text for tweet in results]
     data_set["created_at"] = [tweet.created_at for tweet in results]
@@ -40,11 +41,11 @@ def tweets_df(results):
 
 
 data_set = tweets_df( results )
+
 print(data_set)
 
 
 # sentiment analysis
-
 
 def clean_tweet(tweet):
 
@@ -63,10 +64,14 @@ def analize_sentiment(tweet):
 data_set['SA'] = np.array([ analize_sentiment(tweet) for tweet in data_set['text'] ])
 
 
-display(data_set.head(20))
+
+display(data_set.head())
 pos_tweets = [ tweet for index, tweet in enumerate(data_set['text']) if data_set['SA'][index] > 0]
 neu_tweets = [ tweet for index, tweet in enumerate(data_set['text']) if data_set['SA'][index] == 0]
 neg_tweets = [ tweet for index, tweet in enumerate(data_set['text']) if data_set['SA'][index] < 0]
+data_set.to_csv( 'example.csv' )
+
+
 
 print("Percentage of positive tweets: {}%".format(len(pos_tweets)*100/len(data_set['text'])))
 print("Percentage of neutral tweets: {}%".format(len(neu_tweets)*100/len(data_set['text'])))
@@ -76,23 +81,26 @@ print("Percentage de negative tweets: {}%".format(len(neg_tweets)*100/len(data_s
 
 
 # count the no of followers
-user=api.get_user("Anushik00154360")
+c=input("enter the user")
+user=api.get_user(c)
 print(user.screen_name)
 print(user.followers_count)
 
 
 # tweet a message
-message = "Hey anu!"
+message = "update my twitter account!"
 api.update_status(status=message)
 print("Tweeted: {}".format(message))
 
 
 
-# location ,lang,timezone
+
 for status in tweepy.Cursor(api.home_timeline).items(10):
     print(status.text)
+    
+# location ,lang,timezone
 def location():
-    q=input("enter")
+    q=input("enter the user")
     search_results=api.search(q)
     for search_result in search_results:
         print('location=',search_result.user.location)
@@ -100,6 +108,9 @@ def location():
         print( 'time_zone',search_result.user.time_zone )
 a=location()
 
+
+# analyze top tweets
+from collections import Counter
 
 from nltk.corpus import *
 list=[]
@@ -125,6 +136,7 @@ count=Counter(list).most_common(3)
 print(count)
 
 
+
 #compare the tweets
 a=input("first")
 b=input("second")
@@ -140,4 +152,3 @@ print(s1.count(c))
 for tweet in tweets2:
     s2+=tweet.text
 print(s2.count(d))
-
