@@ -101,36 +101,35 @@ def location():
 a=location()
 
 
-# analyze top tweets
-from collections import Counter
-import nltk
-
 from nltk.corpus import *
 list=[]
-user=api.get_user("Anushik00154360")
-tweets=api.user_timeline(screen_name="realDonaldTrump",count=5,include_rts=True)
-for tweet in tweets:
-    text=tweet.text
+
 stop_words=set(stopwords.words('english'))
-print(stopwords)
-list1=text.join(re.findall("[a-z][^A-Z]*",text)).split()
-list1=re.sub("http\S+\s"," ",text).split()
-list1 = re.sub( "RT|cc"," ",text ).split()
-list1 = re.sub( "#\S+"," ",text ).split()
-list1 = re.sub( "@\S+"," ",text).split()
-list1 = re.sub( "[%s]" % re.escape(":!")," ",text).split()
-list1= re.sub( "\s+"," ",text).split()
-print(list1)
-for word in list1:
-    if word not in stop_words:
-        list.append(word)
+    # print(stopwords)
+for tweet in tweepy.Cursor( api.search,q="realDonaldTrump",lang="en" ).items(10):
+    results.append( tweet )
+    print( tweet.created_at,tweet.text )
+    text=tweet.text
+    list1=text.join(re.findall("[a-z][^A-Z]*",text)).split()
+    list1=re.sub("http\S+\s"," ",text).split()
+    list1 = re.sub( "RT|cc"," ",text ).split()
+    list1 = re.sub( "#\S+"," ",text ).split()
+    list1 = re.sub( "@\S+"," ",text).split()
+    list1 = re.sub( "[%s]" % re.escape(":!")," ",text).split()
+    list1= re.sub( "\s+"," ",text).split()
+    # print(list1)
+    for word in list1:
+        if word not in stop_words:
+            list.append(word)
 count=Counter(list).most_common(3)
 print(count)
 
 
-
-#  compare the tweets
-a,b,c,d=input("enter")
+#compare the tweets
+a=input("first")
+b=input("second")
+c=input("words used by first user")
+d=input("words used by second user")
 tweets=api.search(a)
 tweets2=api.search(b)
 s1=''
