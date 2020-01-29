@@ -11,11 +11,6 @@ from PIL import Image, ImageTk
 
 
 
-Consumer_Key="pEaRIdm4rvACGyzGWmaiALy2g"
-Consumer_Secret="rgFdSuiJ6VVF3pxpdJVPIX5qb2WamZ4lrs7s0MgMK8YWhak6Yq"
-Access_Token="1011804593313837056-qMsdKxKriAqH9f7DtvzItcbKpd1sFb"
-Access_Token_Secret="E8KjsEvZBCcD1ixPKxHi7flgESsVnZjDhoYmCWMps6Baj"
-
 
 auth = tweepy.OAuthHandler( Consumer_Key,Consumer_Secret )
 auth.set_access_token( Access_Token,Access_Token_Secret )
